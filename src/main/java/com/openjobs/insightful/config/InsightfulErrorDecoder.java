@@ -7,8 +7,8 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Slf4j
 public class InsightfulErrorDecoder implements ErrorDecoder {
@@ -20,19 +20,28 @@ public class InsightfulErrorDecoder implements ErrorDecoder {
 
         String body = extractBody(response);
 
-        log.error("Feign Error → method={} status={} body={}",
-                methodKey, response.status(), body);
+        log.error("Feign Error → {} | Status={} | Body={}", methodKey, response.status(), body);
 
-        String message = extractMessage(body);
+        JsonNode json = parseJson(body);
+        String message = extractMessage(json, body);
 
         return switch (response.status()) {
-            case 400 -> new InsightfulApiException("Bad Request: " + message, 400);
-            case 401 -> new InsightfulUnauthorizedException("Unauthorized: Invalid / expired API key");
+
+            case 400 -> parseValidationError(json, message);
+
+            case 401 -> new InsightfulUnauthorizedException("Unauthorized: Invalid or expired API key");
+
             case 403 -> new InsightfulApiException("Forbidden: " + message, 403);
-            case 404 -> new InsightfulNotFoundException("Resource not found: " + message);
-            case 429 -> new InsightfulApiException("Rate limit exceeded: Try again later", 429);
-            case 500, 502, 503, 504 -> new InsightfulServerException(
-                    "Insightful server error: " + message, response.status());
+
+            case 404 -> new InsightfulNotFoundException("Not found: " + message);
+
+            case 409 -> new DuplicateTeamException("Duplicated team: " + message);
+
+            case 429 -> new InsightfulApiException("Rate limit exceeded", 429);
+
+            case 500, 502, 503, 504 ->
+                    new InsightfulServerException("Insightful server error: " + message, response.status());
+
             default -> new InsightfulApiException("Unexpected error: " + message, response.status());
         };
     }
@@ -46,15 +55,35 @@ public class InsightfulErrorDecoder implements ErrorDecoder {
         }
     }
 
-    private String extractMessage(String body) {
-        if (body == null || body.isBlank()) return "";
+    private JsonNode parseJson(String body) {
         try {
-            JsonNode json = mapper.readTree(body);
-            if (json.has("message")) return json.get("message").asText();
-            if (json.has("error")) return json.get("error").asText();
-            return body;
-        } catch (IOException ignored) {
-            return body;
+            return mapper.readTree(body);
+        } catch (Exception e) {
+            return null;
         }
+    }
+
+    private String extractMessage(JsonNode json, String fallback) {
+        if (json == null) return fallback;
+        if (json.has("message")) return json.get("message").asText();
+        if (json.has("error")) return json.get("error").asText();
+        return fallback;
+    }
+
+    private Exception parseValidationError(JsonNode json, String message) {
+
+        if (json == null || !json.has("details")) {
+            return new InsightfulApiException("Bad Request: " + message, 400);
+        }
+
+        List<Map<String, Object>> details = new ArrayList<>();
+
+        json.get("details").forEach(node -> {
+            Map<String, Object> entry = new HashMap<>();
+            node.fields().forEachRemaining(f -> entry.put(f.getKey(), f.getValue()));
+            details.add(entry);
+        });
+
+        return new InsightfulValidationException(message, details);
     }
 }

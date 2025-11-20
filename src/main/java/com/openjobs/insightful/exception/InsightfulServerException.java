@@ -2,7 +2,7 @@ package com.openjobs.insightful.exception;
 
 
 public class InsightfulServerException extends InsightfulApiException {
-    public InsightfulServerException(String msg, int code) {
-        super(msg, code);
+    public InsightfulServerException(String message, int statusCode) {
+        super(message, statusCode);
     }
 }

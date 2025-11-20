@@ -1,14 +1,13 @@
 package com.openjobs.insightful.exception;
 
+import lombok.Getter;
+
+@Getter
 public class InsightfulApiException extends RuntimeException {
-    private final int status;
+    private final int statusCode;
 
-    public InsightfulApiException(String message, int status) {
+    public InsightfulApiException(String message, int statusCode) {
         super(message);
-        this.status = status;
-    }
-
-    public int getStatus() {
-        return status;
+        this.statusCode = statusCode;
     }
 }
