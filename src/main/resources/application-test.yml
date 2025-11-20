@@ -1,0 +1,4 @@
+insightful:
+  api:
+    base-url: http://localhost:9099
+    key: test-key
