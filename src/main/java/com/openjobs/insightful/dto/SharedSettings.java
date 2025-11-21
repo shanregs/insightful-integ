@@ -1,6 +1,6 @@
 package com.openjobs.insightful.dto;
 
-import com.openjobs.insightful.dto.enums.SettingsMode;
+import com.openjobs.insightful.model.enums.SettingsMode;
 import lombok.*;
 
 @Data

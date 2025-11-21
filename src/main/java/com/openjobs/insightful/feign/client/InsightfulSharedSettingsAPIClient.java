@@ -1,4 +1,4 @@
-package com.openjobs.insightful.client;
+package com.openjobs.insightful.feign.client;
 
 
 

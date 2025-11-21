@@ -1,6 +1,6 @@
 package com.openjobs.insightful.dto;
 
-import com.openjobs.insightful.dto.enums.SharedSettingsType;
+import com.openjobs.insightful.model.enums.SharedSettingsType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

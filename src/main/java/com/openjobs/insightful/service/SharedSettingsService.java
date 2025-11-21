@@ -1,6 +1,6 @@
 package com.openjobs.insightful.service;
 
-import com.openjobs.insightful.client.InsightfulSharedSettingsAPIClient;
+import com.openjobs.insightful.feign.client.InsightfulSharedSettingsAPIClient;
 import com.openjobs.insightful.dto.SettingsRequest;
 import com.openjobs.insightful.dto.SharedSettings;
 import com.openjobs.insightful.dto.SharedSettingsResponse;

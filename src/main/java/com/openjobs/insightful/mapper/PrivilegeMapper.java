@@ -1,6 +1,6 @@
 package com.openjobs.insightful.mapper;
 
-import com.openjobs.insightful.dto.enums.PrivilegeLevel;
+import com.openjobs.insightful.model.enums.PrivilegeLevel;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ValueMapping;

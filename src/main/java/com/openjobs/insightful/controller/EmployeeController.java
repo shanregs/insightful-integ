@@ -4,14 +4,14 @@ import com.openjobs.insightful.dto.EmployeeResponse;
 import com.openjobs.insightful.dto.InviteEmployeeRequest;
 import com.openjobs.insightful.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/employee")
@@ -32,14 +32,14 @@ public class EmployeeController {
     }
 
 
-/*    @Operation(summary = "Get all employees")
+    @Operation(summary = "Get all employees")
     @GetMapping
     public ResponseEntity<List<EmployeeResponse>> getAll() {
         List<EmployeeResponse> all = employeeService.getAll();
         return ResponseEntity.ok(all);
-    }*/
+    }
 
-/*
+
     @Operation(summary = "Get one Employee by ID")
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponse> getById(
@@ -49,7 +49,5 @@ public class EmployeeController {
         EmployeeResponse byId = employeeService.getById(id);
         return ResponseEntity.ok(byId);
     }
-*/
-
 
 }

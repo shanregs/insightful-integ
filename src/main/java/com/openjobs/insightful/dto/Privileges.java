@@ -1,6 +1,6 @@
 package com.openjobs.insightful.dto;
 
-import com.openjobs.insightful.dto.enums.PrivilegeLevel;
+import com.openjobs.insightful.model.enums.PrivilegeLevel;
 import lombok.*;
 
 @Data

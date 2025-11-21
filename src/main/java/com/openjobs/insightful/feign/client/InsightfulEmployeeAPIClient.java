@@ -1,9 +1,9 @@
-package com.openjobs.insightful.client;
+package com.openjobs.insightful.feign.client;
 
 
 import com.openjobs.insightful.config.InsightfulFeignConfig;
-import com.openjobs.insightful.dto.CreateTeamRequest;
-import com.openjobs.insightful.dto.TeamResponse;
+import com.openjobs.insightful.dto.EmployeeResponse;
+import com.openjobs.insightful.dto.InviteEmployeeRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @FeignClient(
-        name = "insightfulTeamClient",
-        url = "${insightful.api.base-url}/team",
+        name = "insightfulEmployeeClient",
+        url = "${insightful.api.base-url}/Employee",
         configuration = InsightfulFeignConfig.class
 )
-public interface InsightfulTeamAPIClient {
+public interface InsightfulEmployeeAPIClient {
 
     @GetMapping
-    List<TeamResponse> getTeams();
+    List<EmployeeResponse> getEmployees();
 
     @GetMapping("/{id}")
-    TeamResponse getTeamById(@PathVariable("id") String id);
+    EmployeeResponse getEmployeeById(@PathVariable("id") String id);
 
     @PostMapping
-    TeamResponse createTeams(@RequestBody CreateTeamRequest request);
+    EmployeeResponse inviteEmployee(@RequestBody InviteEmployeeRequest request);
 }

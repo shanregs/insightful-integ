@@ -1,6 +1,6 @@
 package com.openjobs.insightful.service;
 
-import com.openjobs.insightful.client.InsightfulEmployeeAPIClient;
+import com.openjobs.insightful.feign.client.InsightfulEmployeeAPIClient;
 
 import com.openjobs.insightful.dto.*;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -21,7 +21,7 @@ public class EmployeeService {
 
 
     private static final String CB = "insightfulEmployee";
-/*
+
     @Retry(name = CB)
     @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetAll")
     public List<EmployeeResponse> getAll() {
@@ -32,9 +32,9 @@ public class EmployeeService {
     public List<EmployeeResponse> fallbackGetAll(Throwable ex) {
         log.error("Insightful API FAILED in getAll → using fallback: {}", ex.getMessage());
         return Collections.emptyList();
-    }*/
+    }
 
-/*    @Retry(name = CB)
+    @Retry(name = CB)
     @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetOne")
     public EmployeeResponse getById(String id) {
         return client.getEmployeeById(id);
@@ -43,7 +43,7 @@ public class EmployeeService {
     public EmployeeResponse fallbackGetOne(String id, Throwable ex) {
         log.error("Insightful Employee API FAILED in getById({}) → using fallback", id);
         return null; // or a default object
-    }*/
+    }
 
     @Retry(name = CB)
     @CircuitBreaker(name = CB, fallbackMethod = "fallbackInvite")

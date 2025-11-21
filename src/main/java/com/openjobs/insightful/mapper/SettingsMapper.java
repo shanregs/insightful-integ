@@ -2,8 +2,8 @@ package com.openjobs.insightful.mapper;
 
 import com.openjobs.insightful.dto.SharedSettings;
 import com.openjobs.insightful.dto.SharedSettingsResponse;
-import com.openjobs.insightful.dto.enums.SettingsMode;
-import com.openjobs.insightful.dto.enums.SharedSettingsType;
+import com.openjobs.insightful.model.enums.SettingsMode;
+import com.openjobs.insightful.model.enums.SharedSettingsType;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = {PrivilegeMapper.class})

@@ -1,4 +1,4 @@
-package com.openjobs.insightful.config;
+package com.openjobs.insightful.feign;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

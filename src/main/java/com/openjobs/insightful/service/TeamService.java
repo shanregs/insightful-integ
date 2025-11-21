@@ -1,6 +1,6 @@
 package com.openjobs.insightful.service;
 
-import com.openjobs.insightful.client.InsightfulTeamAPIClient;
+import com.openjobs.insightful.feign.client.InsightfulTeamAPIClient;
 import com.openjobs.insightful.dto.CreateTeamRequest;
 import com.openjobs.insightful.dto.SettingsRequest;
 import com.openjobs.insightful.dto.TeamResponse;

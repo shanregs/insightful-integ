@@ -1,4 +1,4 @@
-    package com.openjobs.insightful.dto.enums;
+    package com.openjobs.insightful.model.enums;
 
     import com.fasterxml.jackson.annotation.JsonCreator;
     import com.fasterxml.jackson.annotation.JsonValue;

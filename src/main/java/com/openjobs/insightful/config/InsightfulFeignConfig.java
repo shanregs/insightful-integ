@@ -1,5 +1,6 @@
 package com.openjobs.insightful.config;
 
+import com.openjobs.insightful.feign.InsightfulErrorDecoder;
 import feign.Logger;
 import feign.RequestInterceptor;
 import feign.codec.ErrorDecoder;

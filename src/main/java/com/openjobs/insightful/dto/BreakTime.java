@@ -1,6 +1,6 @@
 package com.openjobs.insightful.dto;
 
-import com.openjobs.insightful.dto.enums.BreakTimeType;
+import com.openjobs.insightful.model.enums.BreakTimeType;
 import lombok.*;
 
 @Data
