@@ -4,7 +4,7 @@ spring:
 insightful:
   api:
     base-url: https://app.insightful.io/api/v1
-
+    key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IndzenN0enpiZXh1bXd4ZiIsImFjY291bnRJZCI6Ind5ZmhmNnlleHBoZ3N3YiIsIm9yZ2FuaXphdGlvbklkIjoid284YTc5bl93OG5jdWxoIiwidHlwZSI6InVzZXIiLCJ1c2VyVHlwZSI6ImFwaSIsInZlcnNpb24iOjIsImlhdCI6MTc2MzI3MTQ2NywiZXhwIjozMTczMDc3MTM4NjcsImF1ZCI6WyJQUk9EIl0sImlzcyI6IlBST0QifQ.Z04U6faJVNlwbflkr8v4aekRdKDx3mmKU4o3yMydXFE
 
 resilience4j:
   retry:

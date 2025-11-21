@@ -4,10 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 # Ignore sensitive app configuration
-/src/main/resources/application.properties
-/src/main/resources/application.yml
-/src/main/resources/application-*.properties
-/src/main/resources/application-*.yml
+src/main/resources/application.properties
+src/main/resources/application.yml
+src/main/resources/application-*.properties
+src/main/resources/application-*.yml
 
 # Ignore other secret files
 *.env
