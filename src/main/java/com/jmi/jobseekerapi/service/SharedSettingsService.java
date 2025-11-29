@@ -1,10 +1,9 @@
 package com.jmi.jobseekerapi.service;
 
-import com.jmi.jobseekerapi.dto.request.SettingRequest;
 import com.jmi.jobseekerapi.core.SharedSettings;
+import com.jmi.jobseekerapi.dto.request.SharedSettingsRequest;
+import com.jmi.jobseekerapi.dto.request.UpdateSharedSettingsRequest;
 import com.jmi.jobseekerapi.dto.response.SharedSettingsResponse;
-import com.jmi.jobseekerapi.dto.request.UpdateSettingRequest;
-import com.openjobs.insightful.dto.*;
 import com.jmi.jobseekerapi.feign.client.InsightfulSharedSettingsAPIClient;
 import com.jmi.jobseekerapi.mapper.SettingsMapper;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -28,11 +27,11 @@ public class SharedSettingsService {
 
     @Retry(name = CB)
     @CircuitBreaker(name = CB, fallbackMethod = "fallbackCreate")
-    public SharedSettingsResponse createSetting(SettingRequest request) {
+    public SharedSettingsResponse createSetting(SharedSettingsRequest request) {
         return client.createSharedSettings(request);
     }
 
-    public SharedSettings fallbackCreate(SettingRequest request, Throwable ex) {
+    public SharedSettings fallbackCreate(SharedSettingsRequest request, Throwable ex) {
         log.error("Insightful API FAILED in create → fallback", ex);
         return null;
     }
@@ -60,15 +59,13 @@ public class SharedSettingsService {
     }
 
 
-
-
     @Retry(name = CB)
     @CircuitBreaker(name = CB, fallbackMethod = "fallbackUpdate")
-    public SharedSettingsResponse updateSetting(String id, UpdateSettingRequest request) {
+    public SharedSettingsResponse updateSetting(String id, UpdateSharedSettingsRequest request) {
         return client.updateSharedSetting(id, request);
     }
 
-    public SharedSettingsResponse fallbackUpdate(String id, UpdateSettingRequest request, Throwable ex) {
+    public SharedSettingsResponse fallbackUpdate(String id, UpdateSharedSettingsRequest request, Throwable ex) {
         log.error("Insightful Setting API FAILED in update(id={}) → fallback: {}", id, ex.getMessage());
         return null;
     }

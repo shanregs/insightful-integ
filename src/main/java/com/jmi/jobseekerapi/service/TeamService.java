@@ -1,7 +1,7 @@
 package com.jmi.jobseekerapi.service;
 
 import com.jmi.jobseekerapi.dto.request.CreateTeamRequest;
-import com.jmi.jobseekerapi.dto.request.SettingRequest;
+import com.jmi.jobseekerapi.dto.request.SharedSettingsRequest;
 import com.jmi.jobseekerapi.dto.response.TeamResponse;
 import com.jmi.jobseekerapi.dto.request.UpdateTeamRequest;
 import com.jmi.jobseekerapi.feign.client.InsightfulTeamAPIClient;
@@ -28,7 +28,7 @@ public class TeamService {
         return client.createTeam(request);
     }
 
-    public TeamResponse fallbackCreate(SettingRequest request, Throwable ex) {
+    public TeamResponse fallbackCreate(SharedSettingsRequest request, Throwable ex) {
         log.error("Insightful Team API FAILED in create → fallback", ex);
         return null;
     }

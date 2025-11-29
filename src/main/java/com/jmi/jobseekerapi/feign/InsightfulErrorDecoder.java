@@ -3,13 +3,15 @@ package com.jmi.jobseekerapi.feign;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jmi.jobseekerapi.exception.*;
-import com.openjobs.insightful.exception.*;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class InsightfulErrorDecoder implements ErrorDecoder {
@@ -45,7 +47,7 @@ public class InsightfulErrorDecoder implements ErrorDecoder {
 
             case 404 -> new InsightfulNotFoundException("Not found: " + message);
 
-            case 409 ->  mapConflictException(message);
+            case 409 -> mapConflictException(message);
 
             case 429 -> new InsightfulApiException("Rate limit exceeded", 429);
 

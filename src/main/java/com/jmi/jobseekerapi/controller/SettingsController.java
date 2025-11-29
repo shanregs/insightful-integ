@@ -1,8 +1,8 @@
 package com.jmi.jobseekerapi.controller;
 
-import com.jmi.jobseekerapi.dto.request.SettingRequest;
+import com.jmi.jobseekerapi.dto.request.SharedSettingsRequest;
 import com.jmi.jobseekerapi.dto.response.SharedSettingsResponse;
-import com.jmi.jobseekerapi.dto.request.UpdateSettingRequest;
+import com.jmi.jobseekerapi.dto.request.UpdateSharedSettingsRequest;
 import com.jmi.jobseekerapi.service.SharedSettingsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/settings")
+@RequestMapping("/shared-settings")
 @RequiredArgsConstructor
 @Slf4j
 public class SettingsController {
@@ -25,7 +25,7 @@ public class SettingsController {
     @Operation(summary = "Create shared settings")
     @PostMapping
     public ResponseEntity<SharedSettingsResponse> createSetting(
-            @Valid @RequestBody SettingRequest request   ) {
+            @Valid @RequestBody SharedSettingsRequest request   ) {
         SharedSettingsResponse sharedSettingsResponse = sharedSettingsService.createSetting(request);
         return ResponseEntity.ok(sharedSettingsResponse);
     }
@@ -55,7 +55,7 @@ public class SettingsController {
             @PathVariable("id") String id,
 
             @Parameter(description = "Update Setting Request", required = true)
-            @RequestBody UpdateSettingRequest request
+            @RequestBody UpdateSharedSettingsRequest request
     ) {
         SharedSettingsResponse updated = sharedSettingsService.updateSetting(id, request);
         return ResponseEntity.ok(updated);

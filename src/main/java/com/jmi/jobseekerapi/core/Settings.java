@@ -16,9 +16,6 @@ public class Settings {
     private Integer breaks;
     private Integer screenshots;
     private BreakTime breakTime;
-
-
     private WeekDays days;
-
     private Privileges privileges;
 }

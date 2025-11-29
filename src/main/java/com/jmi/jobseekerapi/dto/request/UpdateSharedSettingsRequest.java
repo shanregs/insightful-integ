@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateSettingRequest {
+public class UpdateSharedSettingsRequest {
 
     private String name;
 

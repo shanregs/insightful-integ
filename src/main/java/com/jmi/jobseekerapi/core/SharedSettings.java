@@ -1,25 +1,37 @@
 package com.jmi.jobseekerapi.core;
 
-import com.jmi.jobseekerapi.core.enums.SettingsMode;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SharedSettings {
-    private SettingsMode type;
+    private String type;
     private Integer idle;
     private Integer breaks;
     private Integer screenshots;
     private Boolean idleScreenshots;
     private Boolean trackOutsideScheduledShift;
+
+    private Integer start;
+
+
     private BreakTime breakTime;
     private WeekDays days;
-    private Privileges privileges;
-    private Security security;
-    private ScreenRecording screenRecording;
+
     private Boolean icon;
     private Boolean timer;
     private Boolean clocker;
+
+    private Privileges privileges;
+
+    private Security security;
+    private ScreenRecording screenRecording;
+
 }
