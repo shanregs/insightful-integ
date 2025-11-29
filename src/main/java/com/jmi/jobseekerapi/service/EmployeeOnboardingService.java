@@ -1,80 +1,112 @@
 package com.jmi.jobseekerapi.service;
 
-import com.jmi.jobseekerapi.dto.response.EmployeeResponse;
+import com.jmi.jobseekerapi.dto.request.EmployeeOnboardRequest;
 import com.jmi.jobseekerapi.dto.request.InviteEmployeeRequest;
-import com.jmi.jobseekerapi.dto.request.UpdateEmployeeRequest;
-import com.jmi.jobseekerapi.feign.client.InsightfulEmployeeAPIClient;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
+import com.jmi.jobseekerapi.dto.response.EmployeeResponse;
+import com.jmi.jobseekerapi.dto.response.SharedSettingsResponse;
+import com.jmi.jobseekerapi.dto.response.TeamResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class EmployeeOnboardingService {
 
-    private final InsightfulEmployeeAPIClient client;
-    private static final String CB = "insightfulEmployee";
+    private final EmployeeService employeeService;
+    private final TeamService teamService;
+    private final SharedSettingsService sharedSettingsService;
 
-    @Retry(name = CB)
-    @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetAll")
-    public List<EmployeeResponse> getAllEmployees() {
 
-        return client.getEmployees();
+    public EmployeeResponse onboardEmployee(EmployeeOnboardRequest request) {
+        // 1 - create or use Shared Settings
+        SharedSettingsResponse sharedSettingsResponse = null;
+        EmployeeResponse employeeResponse = null;
+        EmployeeOnboardRequest.SharedSettingInfo sharedSetting = request.getSharedSetting();
+        String sharedSettingId = null;
+        if (sharedSetting != null && sharedSetting.getCreateNewSharedSettings()) {
+            if (sharedSetting.getSharedSettingsRequest() != null) {
+                sharedSettingsResponse = sharedSettingsService.createSetting(sharedSetting.getSharedSettingsRequest());
+            } else {
+                log.error("Null sharedSetting.getSharedSettingsRequest");
+                return null;
+            }
+            if (sharedSettingsResponse != null) {
+                sharedSettingId = sharedSettingsResponse.getId();
+                if (sharedSettingId == null) {
+                    log.error("Shared Setting ID is null, cannot proceed with onboarding");
+                    return null;
+                }
+            }
+        } else {
+            sharedSettingId = sharedSetting.getSharedSettingsId();
+            if (sharedSettingId == null) {
+                log.error("Shared Setting ID is null, cannot proceed with onboarding");
+                return null;
+            }
+        }
+
+        //2 - create or use Team
+        String teamId = null;
+        TeamResponse teamResponse = null;
+        EmployeeOnboardRequest.TeamInfo teamInfo = request.getTeam();
+        if (teamInfo != null) {
+            if (teamInfo.getCreateNewTeam() != null && teamInfo.getCreateNewTeam()) {
+                if (teamInfo.getTeamRequest() != null) {
+                    teamResponse = teamService.createTeam(teamInfo.getTeamRequest());
+                    if (teamResponse == null || teamResponse.getId() == null) {
+                        log.error("Failed to create new team, cannot proceed with onboarding");
+                        return null;
+                    } else {
+                        teamId = teamResponse.getId();
+                    }
+                } else {
+                    log.error("Null teamInfo.getTeamRequest");
+                    return null;
+                }
+            } else {
+                teamId = teamInfo.getTeamId();
+                if (teamId == null) {
+                    log.error("Team ID is null, cannot proceed with onboarding");
+                    return null;
+                }
+            }
+        }
+
+        // 3 - create Employee
+        EmployeeOnboardRequest.EmployeeInfo employeeInfo = request.getEmployee();
+        if (employeeInfo != null) {
+            InviteEmployeeRequest employeeRequest = new InviteEmployeeRequest();
+            employeeRequest.setName(employeeInfo.getName());
+
+            employeeRequest.setEmail(employeeInfo.getEmail());
+
+            employeeRequest.setTeamId(teamId);
+            employeeRequest.setSharedSettingsId(sharedSettingId);
+
+            employeeResponse = employeeService.inviteEmployee(employeeRequest);
+            if(employeeResponse == null) {
+                log.error("Failed to create employee during onboarding");
+                return null;
+            }
+            log.info(" {} ", employeeResponse);
+        } else {
+            log.error("Null employeeInfo in onboarding request");
+            return null;
+        }
+        return employeeResponse;
     }
 
-    public List<EmployeeResponse> fallbackGetAll(Throwable ex) {
-        log.error("Insightful API FAILED in getAll → using fallback: {}", ex.getMessage());
-        return Collections.emptyList();
-    }
+   /* private SharedSettingsResponse createNewSharedSettings(EmployeeOnboardRequest.SharedSettingInfo sharedSetting) {
+        if(sharedSetting.getSharedSettingsRequest() != null) {
+            return sharedSettingsService.createSetting(sharedSetting.getSharedSettingsRequest());
+        } else {
+            log.error("Null sharedSetting.getSharedSettingsRequest");
+            return null;
+        }
+    }*/
 
-    @Retry(name = CB)
-    @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetOne")
-    public EmployeeResponse getEmployeeById(String id) {
-        return client.getEmployeeById(id);
-    }
 
-    public EmployeeResponse fallbackGetOne(String id, Throwable ex) {
-        log.error("Insightful Employee API FAILED in getById({}) → using fallback", id);
-        return null; // or a default object
-    }
-
-    @Retry(name = CB)
-    @CircuitBreaker(name = CB, fallbackMethod = "fallbackInvite")
-    public EmployeeResponse inviteEmployee(InviteEmployeeRequest request) {
-        return client.inviteEmployee(request);
-    }
-
-    public EmployeeResponse fallbackInvite(InviteEmployeeRequest request, Throwable ex) {
-        log.error("Insightful Employee API FAILED in invite → fallback", ex);
-        return null;
-    }
-
-    @Retry(name = CB)
-    @CircuitBreaker(name = CB, fallbackMethod = "fallbackUpdate")
-    public EmployeeResponse updateEmployee(String id, UpdateEmployeeRequest request) {
-        return client.updateEmployee(id, request);
-    }
-
-    public EmployeeResponse fallbackUpdate(String id, UpdateEmployeeRequest request, Throwable ex) {
-        log.error("Insightful Employee API FAILED in update(id={}) → fallback: {}", id, ex.getMessage());
-        return null;
-    }
-
-    @Retry(name = CB)
-    @CircuitBreaker(name = CB, fallbackMethod = "fallbackDeactivate")
-    public EmployeeResponse deactivateEmployee(String id) {
-        return client.deactivateEmployee(id);
-    }
-
-    public EmployeeResponse fallbackDeactivate(String id, Throwable ex) {
-        log.error("Insightful Employee API FAILED in deactivate(id={}) → fallback: {}", id, ex.getMessage());
-        return null;
-    }
 }
 
