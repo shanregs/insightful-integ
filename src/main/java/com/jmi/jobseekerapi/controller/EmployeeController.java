@@ -49,6 +49,19 @@ public class EmployeeController {
         return ResponseEntity.ok(all);
     }
 
+    @Operation(summary = "Get all pending employees (who have been invited but not yet onboarded)")
+    @GetMapping(params = "status=pending")
+    public ResponseEntity<List<EmployeeResponse>> getPendingEmployees() {
+        List<EmployeeResponse> all = employeeService.getPendingEmployees();
+        return ResponseEntity.ok(all);
+    }
+
+    @Operation(summary = "Get all Deactivated employees")
+    @GetMapping(params = "status=deactivated")
+    public ResponseEntity<List<EmployeeResponse>> getDeactivatedEmployees() {
+        List<EmployeeResponse> all = employeeService.getDeactivatedEmployees();
+        return ResponseEntity.ok(all);
+    }
 
     @Operation(summary = "Update an existing Employee")
     @PutMapping("/{id}")

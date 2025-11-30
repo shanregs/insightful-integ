@@ -34,6 +34,32 @@ public class EmployeeService {
     }
 
     @Retry(name = CB)
+    @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetPendingEmployees")
+    public List<EmployeeResponse> getPendingEmployees() {
+
+        return client.getPendingEmployees();
+    }
+
+    public List<EmployeeResponse> fallbackGetPendingEmployees(Throwable ex) {
+        log.error("Insightful API FAILED in getPendingEmployees → using fallback: {}", ex.getMessage());
+        return Collections.emptyList();
+    }
+
+
+    @Retry(name = CB)
+    @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetDeactivatedEmployees")
+    public List<EmployeeResponse> getDeactivatedEmployees() {
+
+        return client.getDeactivatedEmployees();
+    }
+
+    public List<EmployeeResponse> fallbackGetDeactivatedEmployees(Throwable ex) {
+        log.error("Insightful API FAILED in getDeactivatedEmployees → using fallback: {}", ex.getMessage());
+        return Collections.emptyList();
+    }
+
+
+    @Retry(name = CB)
     @CircuitBreaker(name = CB, fallbackMethod = "fallbackGetOne")
     public EmployeeResponse getEmployeeById(String id) {
         return client.getEmployeeById(id);

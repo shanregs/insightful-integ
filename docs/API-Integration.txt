@@ -1,0 +1,576 @@
+
+
+1	https://github.com/shanregs/insightful-integ
+
+- Understand the Insightful API and account structure.
+	https://developers.insightful.io/#intro
+
+shanintcomp1@outlook.com
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Inc1cGowb210X3NxODZ2ciIsImFjY291bnRJZCI6IndvY2J6dnp3b2s0c2RxayIsIm9yZ2FuaXphdGlvbklkIjoid3RhMWltNGdhcmRmejZiIiwidHlwZSI6InVzZXIiLCJ1c2VyVHlwZSI6ImFwaSIsInZlcnNpb24iOjIsImlhdCI6MTc2NDQyNDg3NywiZXhwIjozMTczMDg4NjcyNzcsImF1ZCI6WyJQUk9EIl0sImlzcyI6IlBST0QifQ.nWwZ2V6saSeC1R3pGHS9wIGuIyb1oe6JTrBjhgw-8ec
+
+
+2 - Current APP --> Integrate the API with
+	a. Jobseeker and
+	b. Company modules to enable data exchange.
+
+
+3 - Understand the Certn Background Check API and related account setup.
+		https://docs.certn.co/api/certn-api-v-1.0
+4 - Integrate the background check process with the our application module using APIs
+
+
+team id : wckongy8lynhlze
+
+Shared id:
+        "id": "wanmbkziqq0rz09",
+        "name": "Personal computers",
+        "organizationId": "wyy08x2zgvxzfoz",
+        "type": "personal",
+
+Shared Settings
+---------------
+POST
+setting - add
+https://app.insightful.io/api/v1/shared-settings
+
+
+Create
+{
+    "name": "Your settings name2",
+    "type": "personal",
+    "settings": {
+        "type": "unlimited",
+        "icon": true,
+        "timer": true,
+        "clocker": true,
+        "start": 2,
+        "idle": 1,
+        "breaks": 0,
+        "screenshots": 1,
+        "breakTime": {
+            "type": "disabled"
+        },
+        "days": {
+            "monday": true,
+            "tuesday": true,
+            "wednesday": true,
+            "thursday": true,
+            "friday": true,
+            "saturday": true,
+            "sunday": true
+        },
+        "privileges": {
+            "apps": true,
+            "productivity": false,
+            "pm": false,
+            "screenshots": false,
+            "offline": false,
+            "manualTime": false
+        }
+    }
+}
+
+
+
+company computer: --add
+
+{
+	"name": "shan-setting-conmpany",
+	"type": "office",
+	"settings": {
+		"type": "unlimited",
+		"idle": 120,
+		"breaks": 0,
+		"breakTime": {
+			"type": "disabled"
+		},
+		"screenshots": 3600,
+		"screenRecording": {
+			"enabled": false,
+			"taskOnly": false
+		},
+		"days": {
+			"monday": true,
+			"tuesday": true,
+			"wednesday": true,
+			"thursday": true,
+			"friday": true,
+			"saturday": false,
+			"sunday": false
+		},
+		"icon": false,
+		"privileges": {
+			"apps": false,
+			"productivity": false,
+			"screenshots": false,
+			"pm": false,
+			"offline": false,
+			"manualTime": true,
+			"manualTimeCreate": false,
+			"shiftScheduling": true
+		},
+		"timer": false,
+		"clocker": false,
+		"trackOutsideScheduledShift": true,
+		"idleScreenshots": false
+	}
+}
+
+Company-computer - update
+{
+	"id": "wtt6mvlomegbz9k",
+	"name": "shan-setting-conmpany",
+	"organizationId": "wyy08x2zgvxzfoz",
+	"type": "office",
+	"settings": {
+		"type": "unlimited",
+		"idle": 120,
+		"breaks": 0,
+		"breakTime": {
+			"type": "disabled"
+		},
+		"screenshots": 600,
+		"screenRecording": {
+			"enabled": false,
+			"taskOnly": false
+		},
+		"days": {
+			"monday": false,
+			"tuesday": true,
+			"wednesday": true,
+			"thursday": true,
+			"friday": true,
+			"saturday": false,
+			"sunday": false
+		},
+		"icon": true,
+		"privileges": {
+			"apps": true,
+			"productivity": true,
+			"screenshots": "write",
+			"pm": "write",
+			"offline": false,
+			"manualTime": true,
+			"manualTimeCreate": true,
+			"shiftScheduling": true
+		},
+		"timer": true,
+		"clocker": false,
+		"trackOutsideScheduledShift": true,
+		"idleScreenshots": false
+	},
+	"default": false,
+	"createdAt": 1763894323341,
+	"updatedAt": 1763894323341,
+	"modelName": "SharedSettings"
+}
+
+Project
+--------
+1 - Add project
+--------------
+{
+    "name": "",
+    "description": "",
+    "employees": [],
+    "statuses": [],
+    "priorities": [],
+    "billable": "",
+    "deadline": "",
+    "payroll": {
+        "billRate": "",
+        "overtimeBillrate": ""
+    }
+}
+
+curl --location 'https://app.insightful.io/api/v1/project' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Your project name",
+    "description": "Your project description",
+    "employees": [
+        "wk59h7b0cq8b1oq",
+        "w8jt496hid4shz3"
+    ],
+    "statuses": [
+        "To Do",
+        "In progress",
+        "Done"
+    ],
+    "priorities": [
+        "low",
+        "medium",
+        "high"
+    ],
+    "billable": true,
+    "payroll": {
+        "billRate": 25,
+        "overtimeBillrate": 55
+    }
+}'
+
+Add project response :
+---------
+{
+  "id": "wiotv0ilptz9uqg",
+  "archived": false,
+  "statuses": [
+    "To Do",
+    "In progress",
+    "Done"
+  ],
+  "priorities": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "billable": true,
+  "payroll": {
+    "billRate": 25,
+    "overtimeBillrate": 55
+  },
+  "name": "Your project name",
+  "description": "Your project description",
+  "employees": [
+    "wk59h7b0cq8b1oq",
+    "w8jt496hid4shz3"
+  ],
+  "creatorId": "wuiz-yuxbtr9aul",
+  "organizationId": "wbtmikjuiimvh3z",
+  "teams": [
+    "wautlmuhdnndn7f"
+  ],
+  "createdAt": 1592926661681
+}
+
+2 - GET Project https://app.insightful.io/api/v1/project/:id
+
+	Succes Response: 200
+	{
+	  "id": "wj7qcsinkdn7ugd",
+	  "archived": false,
+	  "statuses": [
+		"To do",
+		"On hold",
+		"In progress",
+		"Done"
+	  ],
+	  "priorities": [
+		"low",
+		"medium",
+		"high"
+	  ],
+	  "billable": true,
+	  "payroll": {
+		"billRate": 1,
+		"overtimeBillRate": 1
+	  },
+	  "name": "Project 2",
+	  "employees": [],
+	  "creatorId": "wlaxrvp-a_wznu1",
+	  "organizationId": "wbtmikjuiimvh3z",
+	  "teams": [],
+	  "createdAt": 1592568826171
+	}
+
+Failure response: 422 Unprocessable Entity
+{
+  "type": "VALIDATION_ERROR",
+  "message": "Parameters validation error!",
+  "details": [
+    {
+      "type": "stringLength",
+      "expected": 15,
+      "actual": 14,
+      "field": "id",
+      "message": "The 'id' field length must be 15 characters long!",
+      "nodeID": "antonije-pc-14756",
+      "action": "pm.project.endpoint.get"
+    }
+  ]
+}
+
+3 - Get All Project for the organization
+GETProject - find https://app.insightful.io/api/v1/project
+curl --location 'https://app.insightful.io/api/v1/project' \
+--header 'Content-Type: application/json' \
+--header 'Content-Type: application/x-www-form-urlencoded'
+
+response :
+[
+  {
+    "id": "w7wn6lphwsq820i",
+    "archived": false,
+    "statuses": [
+      "To do",
+      "On hold",
+      "In progress",
+      "Done"
+    ],
+    "priorities": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "billable": true,
+    "payroll": {
+      "billRate": 1,
+      "overtimeBillRate": 1
+    },
+    "name": "Project 1",
+    "employees": [],
+    "creatorId": "wr-sz9z22eojwz9",
+    "organizationId": "wbtmikjuiimvh3z",
+    "teams": [],
+    "createdAt": 1592571902985
+  },
+  {
+    "id": "wj7qcsinkdn7ugd",
+    "archived": false,
+    "statuses": [
+      "To do",
+      "On hold",
+      "In progress",
+      "Done"
+    ],
+    "priorities": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "billable": true,
+    "payroll": {
+      "billRate": 1,
+      "overtimeBillRate": 1
+    },
+    "name": "Project 2",
+    "employees": [],
+    "creatorId": "wlaxrvp-a_wznu1",
+    "organizationId": "wbtmikjuiimvh3z",
+    "teams": [],
+    "createdAt": 1592568826171
+  },
+  {
+    "id": "woppry42l6g9qca",
+    "archived": false,
+    "statuses": [
+      "To do",
+      "On hold",
+      "In progress",
+      "Done"
+    ],
+    "priorities": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "billable": true,
+    "payroll": {
+      "billRate": 1,
+      "overtimeBillRate": 1
+    },
+    "name": "Project 3",
+    "employees": [],
+    "creatorId": "wr-sz9z22eojwz9",
+    "organizationId": "wbtmikjuiimvh3z",
+    "teams": [],
+    "createdAt": 1592571911134
+  },
+  {
+    "id": "wd4zag8tfjixaud",
+    "archived": false,
+    "statuses": [
+      "To do",
+      "On hold",
+      "In progress",
+      "Done"
+    ],
+    "priorities": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "billable": true,
+    "payroll": {
+      "billRate": 1,
+      "overtimeBillRate": 1
+    },
+    "name": "Project 4",
+    "employees": [],
+    "creatorId": "wr-sz9z22eojwz9",
+    "organizationId": "wbtmikjuiimvh3z",
+    "teams": [],
+    "createdAt": 1592571951556
+  },
+  {
+    "id": "w_g3asjvaulvbza",
+    "archived": false,
+    "statuses": [
+      "To do",
+      "On hold",
+      "In progress",
+      "Done"
+    ],
+    "priorities": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "billable": true,
+    "payroll": {
+      "billRate": 1,
+      "overtimeBillRate": 1
+    },
+    "name": "Project 5",
+    "employees": [],
+    "creatorId": "wr-sz9z22eojwz9",
+    "organizationId": "wbtmikjuiimvh3z",
+    "teams": [],
+    "createdAt": 1592571852791
+  }
+]
+
+4- PUT : Project - update
+https://app.insightful.io/api/v1/project/:id
+
+{
+    "name": "",
+    "description": "",
+    "employees": [],
+    "statuses": [],
+    "priorities": [],
+    "billable": "",
+    "deadline": "",
+    "payroll": {
+        "billRate": "",
+        "overtimeBillrate": ""
+    },
+    "archived": "",
+    "screenshotSettings": {
+        "screenshotEnabled": false
+    }
+}
+curl
+
+curl --location --request PUT 'https://app.insightful.io/api/v1/project/wiotv0ilptz9uqg' \
+--header 'Content-Type: application/json' \
+--data '{
+  "id": "wiotv0ilptz9uqg",
+  "name": "New Project name",
+  "description": "New project description",
+  "employees": [
+    "wk59h7b0cq8b1oq"
+  ]
+}'
+
+Response :
+{
+  "id": "wiotv0ilptz9uqg",
+  "archived": false,
+  "statuses": [
+    "To Do",
+    "In progress",
+    "Done"
+  ],
+  "priorities": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "billable": true,
+  "payroll": {
+    "billRate": 25,
+    "overtimeBillrate": 55
+  },
+  "name": "New Project name",
+  "description": "New project description",
+  "employees": [
+    "wk59h7b0cq8b1oq"
+  ],
+  "creatorId": "wuiz-yuxbtr9aul",
+  "organizationId": "wbtmikjuiimvh3z",
+  "teams": [
+    "wautlmuhdnndn7f"
+  ],
+  "createdAt": 1592926661681
+}
+
+
+
+6 - DELETE 	Project - delete	https://app.insightful.io/api/v1/project/:id
+
+response
+----------
+{
+  "id": "w7wn6lphwsq820i",
+  "archived": false,
+  "statuses": [
+    "To do",
+    "On hold",
+    "In progress",
+    "Done"
+  ],
+  "priorities": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "billable": true,
+  "payroll": {
+    "billRate": 1,
+    "overtimeBillRate": 1
+  },
+  "name": "Project 1",
+  "employees": [],
+  "creatorId": "wr-sz9z22eojwz9",
+  "organizationId": "wbtmikjuiimvh3z",
+  "teams": [],
+  "createdAt": 1592571902985
+}
+
+
+Pending employees
+----------------
+{{server}}/employee/?status=pending
+[
+    {
+        "id": "w4bbzvv3rvdnj_p",
+        "name": "Bob Johnson",
+        "type": "personal",
+        "identifier": "shantest1980@outlook.com",
+        "pseudonymId": 1,
+        "deactivated": 0,
+        "invited": 1764442391704,
+        "teamId": "w5zk7mg3qdrz6eo",
+        "sharedSettingsId": "wv0nsufdbgxwe_m",
+        "projects": [],
+        "email": "shantest1980@outlook.com",
+        "createdAt": 1764442391713,
+        "modelName": "Employee"
+    }
+]
+
+
+desctivated employees
+{{server}}/employee/?status=deactivated
+
+https://app.insightful.io/api/v1/employee?status=active
+active employees
+
+[
+	{
+		"id": "w4bbzvv3rvdnj_p",
+		"name": "Bob Johnson",
+		"type": "personal",
+		"identifier": "shantest1980@outlook.com",
+		"pseudonymId": 1,
+		"deactivated": 0,
+		"invited": 0,
+		"teamId": "w5zk7mg3qdrz6eo",
+		"sharedSettingsId": "wv0nsufdbgxwe_m",
+		"projects": [],
+		"email": "shantest1980@outlook.com",
+		"createdAt": 1764442391713,
+		"modelName": "Employee"
+	}
+]

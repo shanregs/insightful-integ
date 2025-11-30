@@ -25,6 +25,12 @@ public interface InsightfulEmployeeAPIClient {
     @GetMapping
     List<EmployeeResponse> getEmployees();
 
+    @GetMapping(params = "status=pending")
+    List<EmployeeResponse> getPendingEmployees();
+
+    @GetMapping(params = "status=deactivated")
+    List<EmployeeResponse> getDeactivatedEmployees();
+
     @PutMapping("/{id}")
     EmployeeResponse updateEmployee(@PathVariable("id") String id, @RequestBody UpdateEmployeeRequest request);
 
